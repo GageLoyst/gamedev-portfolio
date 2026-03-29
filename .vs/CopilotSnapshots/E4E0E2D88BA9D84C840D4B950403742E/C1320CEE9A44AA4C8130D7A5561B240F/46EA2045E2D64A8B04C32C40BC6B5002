@@ -1,0 +1,188 @@
+﻿<template>
+  <div>
+    <h1>Resume</h1>
+
+    <div class="paragraph">
+        I'm <strong>Gage Loyst</strong>, a 22-year-old solo game developer with 5 years of volunteer experience testing pre-release Electronic Arts titles. Experienced in making gameplay systems, level design, and quality assurance, including bug tracking, issue reproduction, and gameplay feedback. Hands-on Unity and C# game developer with multiple projects showing a variety of skills. Seeking an entry-level role to support high-quality game releases.
+        <br />Ive been making mods and my own little games since I was a kid and I love every part of the process from design to coding to testing.
+        <br />
+        <br />Right now I'm trying to find a position in the games industry, so feel free to to contact me via email or discord for any opportunity paid or not.
+        <router-link to="/contact">contact me</router-link>.
+        <br />
+
+        <div style="margin-top:20px; margin-bottom:20px;">
+            <a class="download-link" href="d/resume-en.pdf" target="_blank"><i class="fa fa-download fa-lg fa-fw"></i> Download as PDF 🇬🇧</a>
+            <a class="download-link" href="d/cv-fr.pdf" target="_blank"><i class="fa fa-download fa-lg fa-fw"></i> Télécharger en PDF 🇫🇷</a>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+    <div class="photo">
+      <img src="img/avatest.jpg" alt="Photo of John" />
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div class="full-content">
+        <h2>Work experience</h2>
+
+        <h3>Electronic Arts Playtester (Remote, Volunteer)</h3>
+        <h4>2020-2025</h4>
+
+        <div>
+            Tested pre-release game builds.
+            Identified functionality and usability issues.
+            Documented detailed feedback to assist development teams.
+            Collaborated with cross-functional teams to refine gameplay experience.
+            Developed strong skills in reproducibility, bug, documentation and gameplay balancing feedback.
+        </div>
+
+        <h2>Education</h2>
+
+        <h3>Complete Unity 2D Developer: Create Your Own 2D Games Using Unity C#</h3>
+        <h4>Instructor: Rick Davidson</h4>
+
+        <div>
+            Full course on Unity 2D game development covering C# programming, game mechanics, physics, animations, UI, and everything else needed to make multiple full 2D games from scratch.
+        </div>
+
+        <div style="margin-top:10px;">
+          <a class="download-link" href="d/certificateunity.pdf" target="_blank"><i class="fa fa-certificate fa-lg fa-fw"></i> View Unity course certificate</a>
+          <div style="clear:both"></div>
+        </div>
+
+        <h2>Skills</h2>
+
+        <div class="skill-set">
+            <h3>Languages</h3>
+            <SkillRate name="C#" />
+            <SkillRate name="C++" />
+            <SkillRate name="HTML" />
+        </div>
+
+        <div class="skill-set">
+            <h3>Gamedev</h3>
+            <SkillRate name="Unity 5/6" />
+            <SkillRate name="Unreal 5" />
+            <SkillRate name="Photoshop" />
+            <SkillRate name="Illustrator" />
+            <SkillRate name="Audacity" />
+            <SkillRate name="FL Studio" />
+            <SkillRate name="Blender" />
+            <SkillRate name="Radiant (COD Zombies map editor)" />
+        </div>
+
+        <div class="skill-set">
+            <h3>Tools & Frameworks</h3>
+            <SkillRate name="Visual Studio" />
+            <SkillRate name="JetBrains Rider" />
+            <SkillRate name="Jira/Trello basic-knowledge" />
+            <SkillRate name="Git/SVN/HG" />
+        </div>
+        <div style="clear:both" />
+
+        <h2>Languages</h2>
+
+        <h3>English</h3>
+        <div>Born/live in Canada and have spoken english my whole life.</div>
+
+        <h2>Besides...</h2>
+        <div>
+            <h3>I ❤️ Games</h3>
+            <div>Video games have been a huge part of my life since I was alittle kid. I played Mario and Nintendo games till I Was about 10 and saw my cousin playing COD World at war zombies and it absolutely amazed me. Ever since i've been playing games like fallout, the binding of isaac, call of duty, borderlands and so so many more small and big games as I love trying different types of games out. </div>
+
+            <h3>I 🧡 Music</h3>
+            <div>I used to and still do make music and it has a huge place in my heart. I mainly produce and do instrumental things but i've done some vocal stuff along with that and id say im a pretty capable digital musician.</div>
+
+            <h3>I 💛 Comics</h3>
+            <div>The worlds they create have always amazed me. Some of my favorite comics are Spawn, Deadpool, Magik and Naruto.</div>
+
+
+        </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import SkillRate from "@/components/SkillRate.vue";
+
+export default Vue.extend({
+  name: "Resume",
+  components: {
+    SkillRate,
+  },
+});
+</script>
+
+<style scoped>
+h2 {
+  font-weight: 100;
+  font-size: 2em;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 50px;
+}
+h3 {
+  font-weight: 100;
+  font-size: 1.6em;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 30px;
+}
+h4 {
+  font-weight: 100;
+  font-size: 1.3em;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 15px;
+  font-style: italic;
+}
+
+.paragraph {
+  max-width: 700px;
+}
+
+.download-link {
+  float:left;
+  margin-right: 50px;
+}
+
+.full-content div {
+  max-width: 800px;
+}
+
+.skill-set h3 {
+  padding-bottom: 10px;
+}
+
+.photo img {
+  height: 300px;
+  width: 300px;
+}
+
+.tech-stack {
+  font-style: italic;
+}
+
+.photo {
+  margin-top: 50px;
+  text-align: center;
+}
+
+@media only screen and (min-width: 620px){
+  .paragraph {
+    float: left;
+  }
+
+  .photo {
+    float: left;
+    padding: 30px;
+    padding-left: 80px;
+  }
+
+  .skill-set {
+    float: left;
+    padding-right: 60px; 
+  }
+}
+</style>

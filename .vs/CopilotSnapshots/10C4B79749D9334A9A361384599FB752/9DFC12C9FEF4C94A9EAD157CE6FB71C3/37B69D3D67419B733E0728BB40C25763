@@ -1,0 +1,227 @@
+﻿<template>
+  <transition name="fade">
+    <div v-if="visible">
+      <div class="overlay"></div>
+      <div class="dialog" :style="{ 'background-color': color }">
+        <h1 class="dialog-title">{{ title }}</h1>
+        <div @click="$emit('close')" class="dialog-close"><i class="fa fa-times fa-lg fa-fw"></i></div>
+        <div class="dialog-content">
+          <!-- wrapper to capture/inject listeners on images inserted via v-html -->
+          <div class="html-content" v-html="htmlContent" @click="onContentClick"></div>
+          <div class="dialog-bottom">
+            <a @click="$emit('close')" class="dialog-close-button">Close</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- fullscreen image overlay shown when an image is clicked and allowFullScreen is true -->
+      <div v-if="fullScreenVisible" class="image-overlay" @click="closeFullScreen">
+        <img :src="fullScreenImageUrl" alt="Full screen" />
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  name: "ProjectDetailsOverlay",
+  props: {
+    visible: Boolean,
+    color: String,
+    title: String,
+    htmlContent: String,
+    allowFullScreen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      fullScreenVisible: false,
+      fullScreenImageUrl: "",
+    };
+  },
+  watch: {
+    visible(newVal: boolean) {
+      if (newVal && this.allowFullScreen) {
+        this.$nextTick(() => {
+          this.attachImageListeners();
+        });
+      } else {
+        this.detachImageListeners();
+        this.fullScreenVisible = false;
+        this.fullScreenImageUrl = "";
+      }
+    }
+  },
+  beforeDestroy() {
+    this.detachImageListeners();
+  },
+  methods: {
+    onContentClick(event: Event) {
+      // keep delegated click as fallback
+      if (!this.allowFullScreen) return;
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+      if (target.tagName === 'IMG') {
+        const img = target as HTMLImageElement;
+        const src = img.getAttribute('src') || img.src;
+        if (src) {
+          this.fullScreenImageUrl = src;
+          this.fullScreenVisible = true;
+        }
+      }
+    },
+    attachImageListeners() {
+      const root = this.$el as HTMLElement | null;
+      if (!root) return;
+      const imgs = root.querySelectorAll('.html-content img');
+      imgs.forEach((el) => {
+        // ensure same handler reference by binding to element dataset
+        const fn = (evt: Event) => this.onImageClick(evt);
+        // store handler on element for later removal
+        (el as any).__fullscreenHandler = fn;
+        el.addEventListener('click', fn);
+      });
+    },
+    detachImageListeners() {
+      const root = this.$el as HTMLElement | null;
+      if (!root) return;
+      const imgs = root.querySelectorAll('.html-content img');
+      imgs.forEach((el) => {
+        const fn = (el as any).__fullscreenHandler;
+        if (fn) {
+          el.removeEventListener('click', fn);
+          try { delete (el as any).__fullscreenHandler; } catch(e) { (el as any).__fullscreenHandler = undefined; }
+        }
+      });
+    },
+    onImageClick(event: Event) {
+      event.stopPropagation();
+      const el = event.currentTarget as HTMLImageElement | null;
+      if (!el) return;
+      const src = el.getAttribute('src') || el.src;
+      if (src) {
+        this.fullScreenImageUrl = src;
+        this.fullScreenVisible = true;
+      }
+    },
+    closeFullScreen() {
+      this.fullScreenVisible = false;
+      this.fullScreenImageUrl = "";
+    },
+  },
+});
+</script>
+
+<style scoped>
+.overlay {
+  background-color: rgba(0,0,0,0.5);
+  z-index: 10;
+  position:fixed;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom: 0px;
+}
+
+.dialog {
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 11;
+  margin: 20px;
+  padding-bottom: 10px;
+  color:white;
+}
+
+iframe {
+  width: 100%;
+}
+
+h1.dialog-title {
+    text-align: center;
+    font-size: 1.3em;
+    margin: 0px;
+    padding: 22px;
+}
+
+.dialog-content {
+  padding: 20px;
+}
+
+.dialog-content {
+  background-color: #fcfcfc;
+  color: #696969;
+}
+.dialog-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor:pointer;
+  font-size: 1.2em;
+  font-weight: 100;
+}
+.dialog-close:hover {
+  opacity: 0.6;
+}
+
+.dialog-bottom {
+  text-align: center;
+}
+
+a.dialog-close-button {
+  cursor:pointer;
+  font-size: 1.4em;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* make images inside html content indicate they can be opened */
+.html-content img {
+  cursor: zoom-in;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fullscreen image overlay */
+.image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.95);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.image-overlay img {
+  max-width: 95%;
+  max-height: 95%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+@media only screen and (min-width: 620px){
+  .dialog {
+    margin: 0 auto;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    max-width: 1000px;
+  }
+
+  h1.dialog-title {
+    font-size: 1.6em;
+  }
+
+  .dialog-content {
+    padding: 40px;
+  }
+}
+
+</style>

@@ -1,0 +1,7 @@
+﻿@bodyBgColor: #383838;
+@contentBgColor: #434348;
+@textColor: #dcdcdc;
+@skillRateCircleColor: #ffffff;
+
+// Footer-specific background color so footer can differ from the main body
+@footerBgColor: #2b2b2b;

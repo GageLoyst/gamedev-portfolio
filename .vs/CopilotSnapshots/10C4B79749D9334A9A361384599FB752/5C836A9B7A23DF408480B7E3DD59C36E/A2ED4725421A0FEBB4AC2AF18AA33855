@@ -1,0 +1,201 @@
+﻿<template>
+    <div>
+      <div class="projects-list">
+        <template v-for="project in projects">
+          <div
+            :key="project.id"
+              @click="showDetails(project)"
+              class="project-item"
+              :class="{ 'wide': project.isWide, 'high': project.isHigh }">
+            <div class="project-item-image" :style="{ 'background-image': 'url(' + project.iconUrl + ')' }">
+              <!-- transparent full-size button to capture clicks on the image area without changing appearance -->
+              <button v-if="isImageFullEnabled" class="image-open-btn" @click.stop="openImage(project.iconUrl)" aria-label="Open image"></button>
+            </div>
+            <div class="title-bar" :style="{ 'background-color': project.accentColor + 'DD' }">
+                <div class="title-text">
+                  {{ project.name }}
+                </div>
+              </div>
+          </div>
+        </template>
+      </div>
+
+      <ProjectDetailsOverlay
+        v-on:close="showPopup = false"
+        :visible="showPopup"
+        :title="popupTitle"
+        :htmlContent="popupContent"
+        :color="popupColor"
+        :allowFullScreen="enableImageFullScreen"
+      />
+
+      <!-- fullscreen viewer for thumbnails (only enabled when prop true) -->
+      <div v-if="thumbFullVisible" class="thumb-image-overlay" @click="closeThumbFull">
+        <img :src="thumbFullUrl" alt="Project image" />
+      </div>
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import ProjectDetailsOverlay from "@/components/ProjectDetailsOverlay.vue";
+import ProjectData from "@/data/ProjectData";
+
+export default Vue.extend({
+  name: "ProjectsList",
+  components: {
+    ProjectDetailsOverlay,
+  },
+  props: {
+    projects: Array,
+    // when true, clicking the thumbnail image opens it fullscreen (only enabled by OtherProjects page)
+    enableThumbnailFullScreen: {
+      type: Boolean,
+      default: false,
+    },
+    // when true, images inside the project's html description can be opened fullscreen
+    enableImageFullScreen: {
+      type: Boolean,
+      default: false,
+    }
+  },
+  computed: {
+    // unified flag for whether thumbnail click overlay should be active
+    isImageFullEnabled(): boolean {
+      return (this as any).enableThumbnailFullScreen || (this as any).enableImageFullScreen;
+    }
+  },
+  data: function () {
+    return {
+      showPopup: false,
+      popupTitle: "",
+      popupColor: "",
+      popupContent: "",
+      thumbFullVisible: false,
+      thumbFullUrl: "",
+    };
+  },
+  methods: {
+    showDetails: function (item: ProjectData) {
+      this.popupTitle = item.name;
+      this.popupColor = item.accentColor;
+      this.popupContent = item.htmlDescription;
+      this.showPopup = true;
+      window.scrollTo(0,0);
+    },
+    openImage: function(url: string) {
+      if (!this.isImageFullEnabled) return;
+      if (!url) return;
+      this.thumbFullUrl = url;
+      this.thumbFullVisible = true;
+    },
+    onImageClick: function(item: ProjectData) {
+      // kept for backward compatibility, but prefer openImage
+      this.openImage(item.iconUrl);
+    },
+    closeThumbFull: function() {
+      this.thumbFullVisible = false;
+      this.thumbFullUrl = "";
+    }
+  },
+});
+</script>
+
+<style scoped>
+
+.project-item {
+  height: 300px;
+  margin-bottom: 20px;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-item-image {
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  transition: all 0.2s;
+  position: relative;
+}
+.project-item-image:hover {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+/* transparent full-size button to capture image clicks */
+.image-open-btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: zoom-in;
+}
+
+.project-item:hover {
+filter: brightness(120%);
+}
+
+.title-bar {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  background-color: #222222;
+}
+
+.title-text {
+  padding: 10px;
+}
+
+/* fullscreen thumbnail overlay */
+.thumb-image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.thumb-image-overlay img {
+  max-width: 95%;
+  max-height: 95%;
+}
+
+@media only screen and (min-width: 620px){
+  .projects-list {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    grid-auto-rows: minmax(250px, auto);
+  }
+
+  .project-item {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .wide {
+    grid-column-end: span 2;
+  }
+  .high {
+    grid-row-end: span 2;
+  }
+}
+
+
+
+</style>

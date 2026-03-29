@@ -1,0 +1,145 @@
+﻿import ProjectData from '@/data/ProjectData'
+
+export default [
+    new ProjectData("project-1", "Jump Shot!", "img/projects/Jumpshotcover.PNG", 
+    `
+    <div class="paragraph">
+     <strong>Jump Shot!</strong> is a 2d platformer similar to classic Mario style games, where you control a character jumping through levels filled with obstacles and enemies.
+    </div>
+    <div class="paragraph center">
+        <iframe class="youtube" src="https://www.youtube.com/embed/cDJvXUEzFbQ" frameborder="0" allowfullscreen></iframe>
+    </div>
+   
+
+    <div class="paragraph">
+        Main features :
+        <ul>
+        <li>Multiple handmade tilemap levels that get progressively harder</li>
+        <li>Idle, moving, jumping, death and climbing animations</li>
+        <li>Enemy AI</li>
+        <li>Fluid player movement</li>
+        <li>Custom music</li>
+        <li>Sounds effects</li>
+        <li>Rotating death and level transition screens</li>
+        </ul>
+    </div>
+
+    <div class="paragraph center">
+        <img class="phone-screenshot" src="https://i.imgur.com/TW6bHvp.png" alt="JumpShot!" />
+        <img class="phone-screenshot" src="https://i.imgur.com/8MkrYLJ.png" alt="Optimistic Chubby Screenshot" />
+    </div>
+    `, "#23bd69", true),
+    new ProjectData("project-2", "Timber Town Prototype", "img/projects/timbertowncover.png", `
+    <div class="paragraph">
+        <strong>Timber Town</strong> is one of my passion projects. It's a lumber tycoon 2 inspired game with dynamic tree cutting and building mechanics. I would love to develop it further someday.'
+    </div>
+    <div class="paragraph center">
+        <iframe class="youtube" src="https://www.youtube.com/embed/kpt9KY2PfEk" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="paragraph">
+        Main features :
+        <ul>
+        <li>Dynamic tree cutting where the tree cuts wherever you click</li>
+        <li>Third and first person camera with easy switching by pressing "V"</li>
+        <li>Portal/Half life like dragging and rotating of logs and items</li>
+        <li>Inventory system with dragging, hotbar and item swapping</li>
+        <li>Food, water and health systems. Food goes down over time, water goes down the more you move and health goes down when either of those are empty or you get hit</li>
+        <li>Ability to drag logs into sawmills and based on the volume of the log it gets turned into a plank.</li>
+        <li>Crosshair that tells you what item/tree your looking at</li>
+        </ul>
+    </div>
+
+    <div class="paragraph">
+    </div>
+
+    <div class="paragraph center">
+    <img class="pc-screenshot" src="https://i.imgur.com/ZSczQCl.png" alt="Singing Addict Screenshot" />
+    <img class="pc-screenshot" src="https://i.imgur.com/GzsmPHF.png" alt="Singing Addict Screenshot" />
+    </div>
+    `, "#5a78af"),
+    new ProjectData("project-3", "SnowFlipper", "img/projects/snowcover.PNG", `
+    <div class="paragraph">
+        <strong>SnowFlipper</strong> is a 2 side scrolling runner where you control a character flipping through snowy hills trying not to crash so you can get to the end.
+    </div>
+    <div class="paragraph center">
+        <iframe class="youtube" src="https://www.youtube.com/embed/9ylgO6OPHIQ" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="paragraph">
+        Main features :
+        <ul>
+        <li>Particle effects from riding, falling and passing the finish line</li>
+        <li>Momentum driven physics and movement</li>
+        <li>Level Transitioning</li>
+        <li>Sound effects for falling and finishing</li>
+        </ul>
+    </div>
+
+
+    </div>
+
+    <div class="paragraph center">
+        <img class="pc-screenshot" src="https://i.imgur.com/tcftzWt.png" alt="Drawing Overload Screenshot" />
+        <img class="pc-screenshot" src="https://i.imgur.com/zXmyli4.png" alt="Drawing Overload Screenshot" />
+    </div>
+    `, "#383838"),
+    new ProjectData("project-4", "Delivery Dash", "img/projects/deliverydashcover.PNG", `
+    <div class="paragraph">
+    <strong>Delivery Dash</strong> is the first game i made.It's a simple top down delivery game where you have to pick up and deliver packages while avoiding obstacles.'
+    <br/>Image by <a target="_blank" href="https://www.pexels.com/fr-fr/@neo8iam">NEOSiAM 2020</a>.
+    </div>
+    <div class="paragraph center">
+        <iframe class="youtube" src="https://www.youtube.com/embed/tKKg4iIT0nw" frameborder="0" allowfullscreen></iframe>
+    </div>
+    
+    <div class="paragraph">
+        Main features :
+        <ul>
+        <li>Top down driving movement</li>
+        <li>Collisions</li>
+        <li>Camera movement with vehicle</li>
+        <li>Pickups & scoring</li>
+        </ul>
+    </div>
+
+
+    <div class="paragraph center">
+        <img class="pc-screenshot" src="https://i.imgur.com/bdTfx1A.png" alt="Eugeneable Screenshot" />
+        <img class="pc-screenshot" src="https://i.imgur.com/xHPT6Q9.png" alt="Eugeneable Screenshot" />
+    </div>
+    `, "#e80fb7"),
+    new ProjectData("project-5", "Star Wars: Star Fighter", "img/projects/starwarscover.PNG", `
+    <div class="paragraph">
+        <strong>Star Wars: Star Fighter</strong> is a top down galaga style mobile space shooter where you control a star fighter trying to survive waves of tie fighters.
+        <br/>Image by <a target="_blank" href="https://www.pexels.com/fr-fr/@cottonbro">cottonbro</a>.
+    </div>
+    <div class="paragraph center">
+        <iframe class="youtube" src="https://www.youtube.com/embed/UBGBoJE9868" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="paragraph">
+        Main features :
+        <ul>
+        <li>Background music</li>
+        <li>Main menu with game starting, loading and exiting</li>
+        <li>Sound effects and VFX for shooting and explosions</li>
+        <li>Projectile and health systems</li>
+        <li>Enemy wave spawning</li>
+        <li>Score and highscore system</li>
+        </ul>
+    </div>
+
+    <div class="paragraph">
+        <div class="notice">
+        Windows build available on <a href="https://some.where/nice" target="_blank">itch.io</a>.
+        Source code available on <a href="https://github.com/yourself" target="_blank">GitHub</a>.
+        </div>
+    </div>
+
+    <div class="paragraph center">
+        <img class="pc-screenshot" src="https://i.imgur.com/5bp93ZU.png" alt="Cloud Drew Land Screenshot" />
+        <img class="pc-screenshot" src="https://i.imgur.com/RiobhTE.png" alt="Cloud Drew Land Screenshot" />
+        <img class="pc-screenshot" src="https://i.imgur.com/idAxiOs.png" alt="Cloud Drew Land Screenshot" />
+    </div>`, "#e48246")
+];

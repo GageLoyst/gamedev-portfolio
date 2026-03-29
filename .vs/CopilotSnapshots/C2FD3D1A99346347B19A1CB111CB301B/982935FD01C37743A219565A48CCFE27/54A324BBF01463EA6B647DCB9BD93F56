@@ -1,0 +1,218 @@
+﻿<template>
+    <div>
+      <div class="projects-list">
+        <template v-for="project in projects">
+          <div
+            :key="project.id"
+              @click="showDetails(project)"
+              class="project-item"
+              :class="{ 'wide': project.isWide, 'high': project.isHigh }">
+            <div class="project-item-image" :style="{ 'background-image': 'url(' + project.iconUrl + ')' }">
+            </div>
+            <!-- moved title bar below image so it doesn't cover the image -->
+            <div class="title-bar" :style="{ 'background-color': project.accentColor + 'DD' }">
+                <div class="title-text">
+                  {{ project.name }}
+                </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- If fullscreen mode is enabled for this page, show fullscreen viewer instead of the overlay -->
+      <div v-if="enableImageFullscreen">
+        <div v-if="isFullscreen" class="fullscreen-image" @click="exitFullscreen">
+          <img :src="fullscreenUrl" alt="fullscreen image" />
+        </div>
+      </div>
+
+      <ProjectDetailsOverlay
+        v-if="!enableImageFullscreen"
+        v-on:close="showPopup = false"
+        :visible="showPopup"
+        :title="popupTitle"
+        :htmlContent="popupContent"
+        :color="popupColor"
+      />
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import ProjectDetailsOverlay from "@/components/ProjectDetailsOverlay.vue";
+import ProjectData from "@/data/ProjectData";
+
+export default Vue.extend({
+  name: "ProjectsList",
+  components: {
+    ProjectDetailsOverlay,
+  },
+  props: {
+    projects: Array,
+    enableImageFullscreen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data: function () {
+    return {
+      showPopup: false,
+      popupTitle: "",
+      popupColor: "",
+      popupContent: "",
+      isFullscreen: false,
+      fullscreenUrl: "",
+    };
+  },
+  methods: {
+    showDetails: function (item: ProjectData) {
+      if (this.enableImageFullscreen) {
+        // open the project's thumbnail in fullscreen
+        this.enterFullscreen(item.iconUrl);
+        return;
+      }
+
+      this.popupTitle = item.name;
+      this.popupColor = item.accentColor;
+      this.popupContent = item.htmlDescription;
+      this.showPopup = true;
+      window.scrollTo(0,0);
+    },
+    enterFullscreen(url: string) {
+      this.fullscreenUrl = url;
+      this.isFullscreen = true;
+      document.body.style.overflow = 'hidden';
+    },
+    exitFullscreen() {
+      this.isFullscreen = false;
+      this.fullscreenUrl = '';
+      document.body.style.overflow = '';
+    },
+    handleKeydown(event: KeyboardEvent) {
+      if (this.isFullscreen && event.key === 'Escape') {
+        this.exitFullscreen();
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleKeydown);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeydown);
+    document.body.style.overflow = '';
+  }
+});
+</script>
+
+<style scoped>
+
+.project-item {
+  /* no fixed overall height; image will define height */
+  margin-bottom: 20px;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-item-image {
+  background-size: cover;
+  background-position: center;
+  height: 300px; /* image area height */
+  width: 100%;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.project-item-image:hover {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.project-item:hover {
+filter: brightness(120%);
+}
+
+/* title bar moved below image; no absolute positioning */
+.title-bar {
+  width: 100%;
+  background-color: #222222;
+}
+
+.title-text {
+  padding: 10px;
+}
+
+@media only screen and (min-width: 620px){
+  .projects-list {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    grid-auto-rows: minmax(250px, auto);
+  }
+
+  .project-item {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    /* switch to side-by-side layout on larger screens */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  /* Image sits on the left */
+  .project-item-image {
+    width: 45%;
+    height: auto; /* let the item row determine height */
+    min-height: 200px;
+    transition: transform 0.25s ease;
+    background-position: center;
+  }
+
+  /* Title/content sits on the right */
+  .title-bar {
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #222222;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .title-text {
+    padding: 0;
+  }
+
+  .wide {
+    grid-column-end: span 2;
+  }
+  .high {
+    grid-row-end: span 2;
+  }
+}
+
+/* Fullscreen image viewer styles */
+.fullscreen-image {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+.fullscreen-image img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+</style>

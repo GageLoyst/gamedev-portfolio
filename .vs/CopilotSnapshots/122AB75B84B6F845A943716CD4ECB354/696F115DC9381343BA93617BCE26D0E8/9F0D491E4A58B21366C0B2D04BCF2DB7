@@ -1,0 +1,122 @@
+﻿<template>
+  <div class="header">
+    <div class="banner">
+      <div class="banner-inner">
+        <div class="banner-left">
+          <div class="site-title">Gage's Game Dev Portfolio</div>
+        </div>
+        <div class="nav-bar">
+          <router-link to="/">About me</router-link>
+          <router-link to="/game-projects">Game Projects</router-link>
+          <router-link to="/other-projects">Level Design</router-link>
+          <router-link to="/resume">Resume</router-link>
+          <router-link to="/contact">Contact</router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  name: "Header",
+});
+</script>
+
+<style scoped lang="less">
+
+@import '../css/variables.less';
+
+.header {
+  width: 100%;
+}
+
+/* full-bleed banner */
+    .banner {
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        width: 100vw;
+        /* solid dark background */
+        background: #303030;
+        color: @textColor;
+        /* slightly stronger shadow for depth */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+        box-sizing: border-box;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+.banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px; /* thinner banner */
+  min-height: 44px;
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+}
+
+.site-title {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-size: 0.95rem;
+  /* subtle text shadow for contrast */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+}
+
+.nav-bar {
+  text-align: right;
+  line-height: 1.4em;
+}
+
+a {
+  text-transform: uppercase;
+  margin-left: 12px;
+  margin-right: 12px;
+  padding-bottom: 4px;
+  white-space: nowrap;
+  display: inline-block;
+  color: @textColor;
+  font-size: 0.85rem;
+}
+
+.router-link-exact-active {
+  border: 0px solid @textColor;
+  border-bottom-width: 2px;
+}
+
+@media only screen and (max-width: 760px){
+  .banner-inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 12px;
+  }
+
+  .banner-left {
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .nav-bar {
+    text-align: center;
+    line-height: 1.6em;
+  }
+
+  a {
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-bottom: 0px;
+    font-size: 0.9rem;
+  }
+}
+
+</style>

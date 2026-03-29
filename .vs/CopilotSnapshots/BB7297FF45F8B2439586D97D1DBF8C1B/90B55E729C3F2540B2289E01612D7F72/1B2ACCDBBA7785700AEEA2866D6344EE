@@ -1,0 +1,54 @@
+﻿import Vue from 'vue'
+import VueRouter, { RouteConfig } from 'vue-router'
+import Home from '../views/Home.vue'
+
+Vue.use(VueRouter)
+
+const routes: Array<RouteConfig> = [
+  {
+    path: '/',
+    name: 'Root',
+    meta: { order: 0 },
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/resume',
+    name: 'Resume',
+    meta: { order: 3 },
+    component: () => import(/* webpackChunkName: "about" */ '../views/Resume.vue')
+  },
+  {
+    path: '/game-projects',
+    name: 'Game Projects',
+    meta: { order: 1 },
+    component: () => import(/* webpackChunkName: "about" */ '../views/GameProjects.vue')
+  },
+  {
+    path: '/other-projects',
+    name: 'Other Projects',
+    meta: { order: 2 },
+    component: () => import(/* webpackChunkName: "about" */ '../views/OtherProjects.vue')
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    meta: { order: 4 },
+    component: () => import(/* webpackChunkName: "about" */ '../views/Contact.vue')
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    meta: { order: 99 },
+    component: () => import(/* webpackChunkName: "about" */ '../views/404.vue')
+  },
+  {
+    path: '*',
+    redirect: '/404'
+  }
+]
+
+const router = new VueRouter({
+  routes
+})
+
+export default router

@@ -1,0 +1,200 @@
+﻿<template>
+  <div>
+    <div class="projects-list">
+      <template v-for="project in projects">
+        <div
+          :key="project.id"
+          @click="showDetails(project)"
+          class="project-item"
+          :class="{ 'wide': project.isWide, 'high': project.isHigh, 'below-title': enableFullscreen }">
+          <div class="project-item-image" :style="{ 'background-image': 'url(' + project.iconUrl + ')' }" @click="onImageClick && onImageClick($event, project.iconUrl)">
+          </div>
+          <div class="title-bar" :style="{ 'background-color': project.accentColor + 'DD' }">
+            <div class="title-text">
+              {{ project.name }}
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <ProjectDetailsOverlay
+      v-on:close="showPopup = false"
+      :visible="showPopup"
+      :title="popupTitle"
+      :htmlContent="popupContent"
+      :color="popupColor"
+    />
+
+    <!-- Fullscreen overlay (only when enabled and url set) -->
+    <div v-if="enableFullscreen && fullscreenImageUrl" ref="fsOverlay" class="fs-overlay" @click="closeFullscreen">
+      <img :src="fullscreenImageUrl" class="fs-image" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import ProjectDetailsOverlay from "@/components/ProjectDetailsOverlay.vue";
+import ProjectData from "@/data/ProjectData.ts";
+
+export default Vue.extend({
+  name: "ProjectsList",
+  components: {
+    ProjectDetailsOverlay,
+  },
+  props: {
+    projects: Array,
+    enableFullscreen: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data: function () {
+    return {
+      showPopup: false,
+      popupTitle: "",
+      popupColor: "",
+      popupContent: "",
+      fullscreenImageUrl: null as string | null
+    };
+  },
+  mounted() {
+    document.addEventListener('fullscreenchange', this.onFsChange);
+  },
+  beforeDestroy() {
+    document.removeEventListener('fullscreenchange', this.onFsChange);
+  },
+  methods: {
+    showDetails: function (item: ProjectData) {
+      this.popupTitle = item.name;
+      this.popupColor = item.accentColor;
+      this.popupContent = item.htmlDescription;
+      this.showPopup = true;
+      window.scrollTo(0,0);
+    },
+    onImageClick(event: Event, url: string) {
+      if (!this.enableFullscreen) return;
+      event.stopPropagation();
+      this.openFullscreen(url);
+    },
+    openFullscreen(url: string) {
+      if (!this.enableFullscreen) return;
+      this.fullscreenImageUrl = url;
+      this.$nextTick(() => {
+        const el = this.$refs.fsOverlay as HTMLElement | undefined;
+        if (el && (el as any).requestFullscreen) {
+          (el as any).requestFullscreen().catch(() => void 0);
+        }
+      });
+    },
+    closeFullscreen() {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => void 0);
+      }
+      this.fullscreenImageUrl = null;
+    },
+    onFsChange() {
+      if (!document.fullscreenElement) {
+        this.fullscreenImageUrl = null;
+      }
+    }
+  },
+});
+</script>
+
+<style scoped>
+.project-item {
+  margin-bottom: 20px;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default overlay title behavior */
+.project-item-image {
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.project-item-image:hover {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.project-item:hover {
+  filter: brightness(120%);
+}
+
+.title-bar {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  background-color: #222222;
+}
+
+.title-text {
+  padding: 10px;
+}
+
+/* When below-title class is present, force title below image */
+.project-item.below-title {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+}
+.project-item.below-title .project-item-image {
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+}
+.project-item.below-title .title-bar {
+  position: static !important;
+}
+
+/* Fullscreen overlay styles */
+.fs-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+.fs-image {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+@media only screen and (min-width: 620px){
+  .projects-list {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    grid-auto-rows: minmax(250px, auto);
+  }
+
+  .project-item {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .wide {
+    grid-column-end: span 2;
+  }
+  .high {
+    grid-row-end: span 2;
+  }
+}
+</style>
